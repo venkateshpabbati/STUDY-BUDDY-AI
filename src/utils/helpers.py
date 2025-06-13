@@ -48,7 +48,7 @@ class QuizManager:
 
     def attempt_quiz(self):
         for i,q in enumerate(self.questions):
-            st.markdown(f"**Question {i+1} : {q["question"]}**")
+            st.markdown(f"**Question {i+1} : {q['question']}**")
 
             if q['type']=='MCQ':
                 user_answer = st.radio(
