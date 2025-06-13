@@ -3,6 +3,7 @@ pipeline {
     environment {
         DOCKER_HUB_REPO = "dataguru97/studybuddy"
         DOCKER_HUB_CREDENTIALS_ID = "dockerhub-token"
+        IMAGE_TAG = "v${BUILD_NUMBER}"
     }
     stages {
         stage('Checkout Github') {
@@ -10,12 +11,19 @@ pipeline {
                 echo 'Checking out code from GitHub...'
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/data-guru0/STUDY-BUDDY-AI.git']])
             }
-        }        
+        }   
+        stage('Update Deployment YAML with New Tag') {
+    steps {
+        sh """
+        sed -i 's|image: dataguru97/studybuddy:.*|image: dataguru97/studybuddy:${IMAGE_TAG}|' manifests/deployment.yaml
+        """
+    }
+}     
         stage('Build Docker Image') {
             steps {
                 script {
                     echo 'Building Docker image...'
-                    dockerImage = docker.build("${DOCKER_HUB_REPO}:latest")
+                    dockerImage = docker.build("${DOCKER_HUB_REPO}:${IMAGE_TAG}")
                 }
             }
         }
@@ -24,7 +32,7 @@ pipeline {
                 script {
                     echo 'Pushing Docker image to DockerHub...'
                     docker.withRegistry('https://registry.hub.docker.com' , "${DOCKER_HUB_CREDENTIALS_ID}") {
-                        dockerImage.push('latest')
+                        dockerImage.push("${IMAGE_TAG}")
                     }
                 }
             }

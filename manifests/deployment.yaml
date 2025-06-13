@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
       - name: llmops-app
-        image: dataguru97/studybuddy:latest
-        imagePullPolicy: Always
+        image: dataguru97/studybuddy:v1
         ports:
         - containerPort: 8501
         env:
