@@ -545,7 +545,9 @@ Login and you’re now inside the ArgoCD UI 🎉
 
 ---
 
-#### ⚙️ Step 1: Locate Your Kubernetes Config File
+#### ⚙️ Step 1: Locate Your Kubernetes Config File ( Already given this file in Course Materials Download from there )
+
+
 
 Go to the root directory:
 
